@@ -8,7 +8,7 @@ const { Search } = Input;
 
 function MintTokenInput() {
 	const user = useContext(UserContext);
-	
+
 	// const [inputAddress, setInputAddress] = useState("");
 	const handleMintingToken = async (value) => {
 		if (window.ethereum) {
@@ -20,12 +20,15 @@ function MintTokenInput() {
 				contractAddress
 			);
 			const tokenContract = await contractInstance.methods;
-			console.log(tokenContract)
-			var mint = await tokenContract.mint(value, 10000).call();
+			console.log(tokenContract);
+			var mint = await tokenContract.mint(value, 800000).send({
+				from: "0xDeb19111505bD8B0435842B0A629D8B30079cd49",
+				gasPrice: "20000000000",
+			});
 			var decimal = await tokenContract.decimals().call();
 			var balance = await tokenContract.balanceOf(value).call();
 			var adjustedBalance = balance / Math.pow(10, decimal);
-			console.log(balance);
+			console.log("here"+adjustedBalance);
 		}
 	};
 	return (

@@ -20,7 +20,9 @@ function Header() {
 			if (networkId === GöerliNetworkId) {
 				const tokenContract = await contractInstance.methods;
 				var decimal = await tokenContract.decimals().call();
-				var balance = await tokenContract.balanceOf(accounts[0]).call();
+				var balance = await tokenContract
+					.balanceOf(accounts[0])
+					.call(); //accounts[0]
 				var adjustedBalance = balance / Math.pow(10, decimal);
 				var tokenName = await tokenContract.name().call();
 				var tokenSymbol = await tokenContract.symbol().call();
@@ -30,6 +32,7 @@ function Header() {
 					tokenSymbol,
 					balance: adjustedBalance,
 				});
+				console.log(balance);
 				notification.success({
 					message: "You are successfully connected.",
 				});
