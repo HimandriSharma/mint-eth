@@ -1,31 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Button, notification } from "antd";
 import Web3 from "web3";
 import contractABI from "../contracts/contractABI.json";
+import UserContext from "../context/user/UserContext";
 
 function Header() {
-	const [web3, setWeb3] = useState(null);
+	const user = useContext(UserContext);
 	const GöerliNetworkId = 5;
-	const contractAddress = "0x927dfb9e957526e4d40448d6d05a39ea39a2ee6b";
-	const address = "0xDeb19111505bD8B0435842B0A629D8B30079cd49";
+	const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 	const connectWallet = async () => {
 		if (window.ethereum) {
 			const newWeb3 = new Web3(window.ethereum);
+			const accounts = await newWeb3.eth.requestAccounts();
 			const contractInstance = new newWeb3.eth.Contract(
 				contractABI,
 				contractAddress
 			);
-			const tokenContract = await contractInstance.methods;
-			var decimal = await tokenContract.decimals().call();
-			var balance = await tokenContract.balanceOf(address).call();
-			var adjustedBalance = balance / Math.pow(10, decimal);
-			var tokenName = await tokenContract.name().call();
-			var tokenSymbol = await tokenContract.symbol().call();
-			console.log(decimal, balance, adjustedBalance, tokenName, tokenSymbol);
-			console.log(adjustedBalance + " " + tokenSymbol + " (" + tokenName + ")");
 			const networkId = await newWeb3.eth.net.getId();
 			if (networkId === GöerliNetworkId) {
-				setWeb3(newWeb3);
+				const tokenContract = await contractInstance.methods;
+				var decimal = await tokenContract.decimals().call();
+				var balance = await tokenContract.balanceOf(accounts[0]).call();
+				var adjustedBalance = balance / Math.pow(10, decimal);
+				var tokenName = await tokenContract.name().call();
+				var tokenSymbol = await tokenContract.symbol().call();
+				user.updateUserInfo({
+					address: accounts[0],
+					tokenName,
+					tokenSymbol,
+					balance: adjustedBalance,
+				});
 				notification.success({
 					message: "You are successfully connected.",
 				});
@@ -53,7 +57,11 @@ function Header() {
 					padding: "1rem",
 				}}
 			>
-				<Button onClick={connectWallet}>Connect Wallet</Button>
+				<Button onClick={connectWallet}>
+					{user?.state?.address
+						? `Contract Address:${user?.state?.address}`
+						: "Connect Wallet"}
+				</Button>
 			</span>
 		</div>
 	);

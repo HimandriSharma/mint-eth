@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Input } from "antd";
+import Web3 from "web3";
+import UserContext from "../context/user/UserContext";
+import contractABI from "../contracts/contractABI.json";
 
 const { Search } = Input;
 
 function MintTokenInput() {
+	const user = useContext(UserContext);
+	
+	// const [inputAddress, setInputAddress] = useState("");
+	const handleMintingToken = async (value) => {
+		if (window.ethereum) {
+			const newWeb3 = new Web3(window.ethereum);
+			console.log(value);
+			const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+			const contractInstance = new newWeb3.eth.Contract(
+				contractABI,
+				contractAddress
+			);
+			const tokenContract = await contractInstance.methods;
+			console.log(tokenContract)
+			var mint = await tokenContract.mint(value, 10000).call();
+			var decimal = await tokenContract.decimals().call();
+			var balance = await tokenContract.balanceOf(value).call();
+			var adjustedBalance = balance / Math.pow(10, decimal);
+			console.log(balance);
+		}
+	};
 	return (
 		<div
 			style={{
@@ -18,7 +42,7 @@ function MintTokenInput() {
 				allowClear
 				enterButton="Mint Tokens"
 				size="large"
-				// onSearch={onSearch}
+				onSearch={handleMintingToken}
 			/>
 		</div>
 	);
