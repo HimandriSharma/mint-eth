@@ -14,3 +14,44 @@
 	justify-content: center;
 	align-items: center;
 }
+.header-background {
+	position: fixed;
+	height: 4rem;
+	width: 100%;
+	background-color: blue;
+}
+.right-aligned-item {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 1rem;
+}
+.button-overflow-trailing-ellipsis {
+	max-width: 10rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: white;
+}
+.mint-input-position {
+	position: relative;
+	top: 15rem;
+	width: 50%;
+	margin-left: 3rem;
+}
+.user-info-main-div {
+	position: relative;
+	top: 10rem;
+	display: flex;
+	flex-direction: column;
+	margin-left: 3rem;
+}
+.flex-display-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.user-info-val {
+	font-size: 1.4rem;
+	margin-left: 1rem;
+}

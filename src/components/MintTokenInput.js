@@ -53,14 +53,7 @@ function MintTokenInput() {
 		}
 	};
 	return (
-		<div
-			style={{
-				position: "relative",
-				top: "15rem",
-				width: "50%",
-				marginLeft: "3rem",
-			}}
-		>
+		<div className="mint-input-position">
 			<Search
 				placeholder="Input receiver address"
 				enterButton="Mint Tokens"

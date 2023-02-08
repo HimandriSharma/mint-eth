@@ -3,6 +3,7 @@ import { Button, notification } from "antd";
 import Web3 from "web3";
 import contractABI from "../contracts/contractABI.json";
 import UserContext from "../context/user/UserContext";
+import "../App.css";
 
 function Header() {
 	const user = useContext(UserContext);
@@ -41,31 +42,10 @@ function Header() {
 		}
 	};
 	return (
-		<div
-			style={{
-				position: "fixed",
-				height: "4rem",
-				width: "100%",
-				backgroundColor: "blue",
-			}}
-		>
-			<span
-				style={{
-					position: "absolute",
-					right: "0",
-					top: "0",
-					padding: "1rem",
-				}}
-			>
-				<Button onClick={connectWallet} block={true}>
-					<div
-						style={{
-							maxWidth: "10rem",
-							overflow: "hidden",
-							whiteSpace: "nowrap",
-							textOverflow: "ellipsis",
-						}}
-					>
+		<div className="header-background">
+			<span className="right-aligned-item">
+				<Button onClick={connectWallet} block={true} disabled={user?.state?.address} type="primary">
+					<div className="button-overflow-trailing-ellipsis">
 						{user?.state?.address
 							? `Contract Address:${user?.state?.address}`
 							: "Connect Wallet"}
