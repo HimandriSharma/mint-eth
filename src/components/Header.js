@@ -57,10 +57,19 @@ function Header() {
 					padding: "1rem",
 				}}
 			>
-				<Button onClick={connectWallet}>
-					{user?.state?.address
-						? `Contract Address:${user?.state?.address}`
-						: "Connect Wallet"}
+				<Button onClick={connectWallet} block={true}>
+					<div
+						style={{
+							maxWidth: "10rem",
+							overflow: "hidden",
+							whiteSpace: "nowrap",
+							textOverflow: "ellipsis",
+						}}
+					>
+						{user?.state?.address
+							? `Contract Address:${user?.state?.address}`
+							: "Connect Wallet"}
+					</div>
 				</Button>
 			</span>
 		</div>

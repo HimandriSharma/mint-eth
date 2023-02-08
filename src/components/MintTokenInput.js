@@ -9,8 +9,9 @@ const { Search } = Input;
 function MintTokenInput() {
 	const user = useContext(UserContext);
 	const [loading, setLoading] = useState(false);
+	const validAddress = new RegExp(/^0x[a-fA-F0-9]{40}$/g);
 	const handleMintingToken = async (value) => {
-		if (user?.state?.address) {
+		if (validAddress.test(value) && user?.state?.address) {
 			const newWeb3 = new Web3(window.ethereum);
 			const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 			const contractInstance = new newWeb3.eth.Contract(
@@ -39,14 +40,15 @@ function MintTokenInput() {
 						message: "Minting Token Successfully completed.",
 					});
 				})
-				.catch(() =>
+				.catch(() => {
+					setLoading(false);
 					notification.error({
 						message: `Error occured!`,
-					})
-				);
+					});
+				});
 		} else {
 			notification.error({
-				message: `Please connect your wallet first.`,
+				message: `Either wallet not connected or receiver Address invalid.`,
 			});
 		}
 	};
@@ -60,7 +62,7 @@ function MintTokenInput() {
 			}}
 		>
 			<Search
-				placeholder="input user address"
+				placeholder="Input receiver address"
 				enterButton="Mint Tokens"
 				size="large"
 				onSearch={handleMintingToken}
